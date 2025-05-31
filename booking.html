@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login/Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000;
+      --gold: #ffd700;
+      --white: #fff;
+      --input-bg: rgba(0, 0, 0, 0.6);
+      --border-glow: rgba(255, 215, 0, 0.9);
+      --shadow: 0 4px 24px rgba(0,0,0,0.35);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: 
+        url('login.png') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card-container {
+      perspective: 1200px;
+      width: 100%;
+      max-width: 400px;
+      height: 500px;
+      position: relative;
+      margin: 20px;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.8s cubic-bezier(.4,2,.6,1);
+      transform-style: preserve-3d;
+    }
+
+    .card.flip {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.85);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 40px 32px;
+      color: var(--white);
+    }
+
+    .card-front {
+      z-index: 2;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--gold);
+      margin-bottom: 30px;
+      font-size: 2rem;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      width: 100%;
+    }
+
+    .input-group {
+      width: 100%;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border-glow);
+      border-radius: 8px;
+      background: var(--input-bg);
+      color: var(--white);
+      font-size: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+      background: rgba(0,0,0,0.7);
+    }
+
+    .login-btn, .register-btn {
+      width: 100%;
+      padding: 13px 0;
+      background: var(--gold);
+      color: var(--black);
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 5px;
+      transition: background 0.3s, color 0.3s, border 0.3s;
+      box-shadow: 0 2px 8px rgba(255,215,0,0.15);
+    }
+
+    .login-btn:hover, .register-btn:hover {
+      background: var(--white);
+      color: var(--gold);
+      border: 2px solid var(--gold);
+    }
+
+    .forgot-link, .create-link, .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.98rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      cursor: pointer;
+      letter-spacing: 0.2px;
+    }
+
+    .forgot-link:hover, .create-link:hover, .back-link:hover {
+      color: var(--white);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 500px) {
+      .card-container {
+        max-width: 98vw;
+        height: 98vw;
+        min-height: 420px;
+      }
+      .card-face {
+        padding: 24px 8vw;
+      }
+      h2 {
+        font-size: 1.3rem;
+      }
+    }
+    .card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  overflow: hidden; /* Important! */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 3px solid #ffd700;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 40px 32px;
+  color: var(--white);
+  z-index: 1;
+}
+
+.card-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2); /* Adjust alpha for desired transparency */
+  border-radius: 18px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* All content inside .card-face should be above the ::before */
+.card-face > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+.card-back {
+  transform: rotateY(180deg);
+  backface-visibility: hidden; /* Add this for safety */
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="card-container">
+    <div class="card" id="card">
+      <!-- Login Form -->
+      <div class="card-face card-front">
+        <h2>LOG IN</h2>
+        <form action="#" method="POST" autocomplete="off">
+          <div class="input-group">
+            <input type="text" name="username" placeholder="Username" required />
+          </div>
+          <div class="input-group">
+            <input type="password" name="password" placeholder="Password" required />
+          </div>
+          <a href="#" class="forgot-link">Forgot password?</a>
+          <button type="submit" class="login-btn">Log In</button>
+          <span class="create-link" onclick="flipCard()">Click here to create an account</span>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div class="card-face card-back">
+        <h2>REGISTER</h2>
+        <form action="#" method="POST" autocomplete="off">
+          <div class="input-group">
+            <input type="text" name="fullname" placeholder="Full Name" required />
+          </div>
+          <div class="input-group">
+            <input type="email" name="email" placeholder="Email" required />
+          </div>
+          <div class="input-group">
+            <input type="password" name="password" placeholder="Password" required />
+          </div>
+          <div class="input-group">
+            <input type="password" name="confirm" placeholder="Confirm Password" required />
+          </div>
+          <button type="submit" class="register-btn">Register</button>
+          <span class="back-link" onclick="flipCard()">Already have an account? Log in</span>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function flipCard() {
+      document.getElementById('card').classList.toggle('flip');
+    }
+  </script>
+</body>
+</html>
