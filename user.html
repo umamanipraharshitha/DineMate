@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #181818;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      background: #232323;
+      border-bottom: 2px solid #ffd700;
+      padding: 0.7rem 2rem;
+      gap: 2rem;
+    }
+    nav span {
+      font-weight: 600;
+      color: #ffd700;
+      font-size: 1.1rem;
+    }
+    nav .logout-btn {
+      margin-left: auto;
+      background: gold;
+      color: #181818;
+      border: none;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      padding: 0.4rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    nav .logout-btn:hover { background: #b71c1c;color: #fff; }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #232323;
+      border-radius: 16px;
+    }
+    .section-title {
+      color: #ffd700;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    /* Menu cards */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .menu-card {
+      background: #292929;
+      border-radius: 14px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+      padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 2px solid #ffd70033;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .menu-card:hover {
+      border-color: #ffd700;
+      box-shadow: 0 8px 32px rgba(255,215,0,0.10);
+    }
+    .menu-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #ffd700;
+      margin-bottom: 1rem;
+      background: #333;
+    }
+    .menu-card h3 {
+      margin: 0.5rem 0 0.3rem 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffd700;
+      text-align: center;
+    }
+    .menu-card p {
+      margin: 0 0 0.5rem 0;
+      font-size: 1rem;
+      color: #eee;
+      text-align: center;
+    }
+    /* Forms */
+    form { margin-bottom: 2rem; }
+    input, select, button {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1.5px solid #ffd700;
+      padding: 0.6rem 1rem;
+      margin-bottom: 1rem;
+      background: #292929;
+      color: #fff;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: #fff;
+    }
+    button[type="submit"] {
+      background: #ffd700;
+      color: #181818;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    button[type="submit"]:hover {
+      background: #fff;
+      color: #ffd700;
+    }
+    /* List cards for bookings/orders */
+    .list-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .list-card {
+      background: #222;
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      border-left: 4px solid #ffd700;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    }
+    .list-card h4 {
+      color: #ffd700;
+      margin: 0 0 0.2rem 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .list-card small {
+      color: #bbb;
+      font-size: 0.92rem;
+    }
+    @media (max-width: 900px) {
+      .container { padding: 1rem; }
+      nav { padding: 1rem; }
+    }
+    @media (max-width: 600px) {
+      .container { max-width: 98vw; padding: 0.5rem; }
+      .section-title { font-size: 1.1rem; }
+      .menu-img { width: 70px; height: 70px; }
+    }
+  </style>
+</head>
+<!-- ... (head and styles unchanged) ... -->
+<body>
+  <nav>
+    <span>User Dashboard</span>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+  </nav>
+  <div class="container">
+    <div class="section-title">Menu</div>
+    <div class="menu-grid" id="menuGrid"></div>
+
+    <div class="section-title">Book a Table</div>
+    <form id="bookingForm">
+      <input type="text" id="bookingName" placeholder="Your Name" readonly>
+      <input type="date" name="date" required>
+      <input type="time" name="time" required>
+      <input type="number" name="guests" placeholder="Guests (optional)">
+      <button type="submit">Book</button>
+    </form>
+    <div class="section-title">Your Bookings</div>
+    <div class="list-cards" id="bookingsList"></div>
+
+    <div class="section-title">Order Food</div>
+    <form id="orderForm">
+      <input type="text" id="orderName" placeholder="Your Name" readonly>
+      <select id="menuSelect" name="menuItem" required></select>
+      <input type="number" name="quantity" placeholder="Quantity" required>
+      <select name="orderType">
+        <option value="dine-in">Dine-In</option>
+        <option value="takeaway">Takeaway</option>
+      </select>
+      <button type="submit">Order</button>
+    </form>
+    <div class="section-title">Your Orders</div>
+    <div class="list-cards" id="ordersList"></div>
+  </div>
+
+<script>
+let currentUserName = localStorage.getItem('userName') || '';
+if (!currentUserName) {
+  window.location.href = 'booking.html';
+}
+
+// Auto-fill and lock name fields
+document.getElementById('bookingName').value = currentUserName;
+document.getElementById('orderName').value = currentUserName;
+
+async function loadMenu() {
+  const res = await fetch('http://localhost:5000/api/menu');
+  const items = await res.json();
+  const menuGrid = document.getElementById('menuGrid');
+  menuGrid.innerHTML = '';
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'menu-card';
+    card.innerHTML = `
+      <img src="${item.photoUrl || 'https://via.placeholder.com/120x120?text=No+Image'}" class="menu-img" alt="${item.name}">
+      <h3>${item.name}</h3>
+      <p>₹${item.price}</p>
+    `;
+    menuGrid.appendChild(card);
+  });
+  const menuSelect = document.getElementById('menuSelect');
+  menuSelect.innerHTML = '';
+  items.forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = item._id;
+    opt.textContent = `${item.name} - ₹${item.price}`;
+    menuSelect.appendChild(opt);
+  });
+}
+
+async function loadBookings() {
+  const res = await fetch('http://localhost:5000/api/bookings');
+  const bookings = await res.json();
+  const list = document.getElementById('bookingsList');
+  list.innerHTML = '';
+  bookings
+    .filter(b => b.name.trim().toLowerCase() === currentUserName.trim().toLowerCase())
+    .forEach(b => {
+      const div = document.createElement('div');
+      div.className = 'list-card';
+      div.innerHTML = `<h4>${b.name}</h4>
+        <small>Date: ${b.date} | Time: ${b.time}${b.guests ? ` | Guests: ${b.guests}` : ''}</small>`;
+      list.appendChild(div);
+    });
+}
+
+async function loadOrders() {
+  const res = await fetch('http://localhost:5000/api/orders');
+  const orders = await res.json();
+  const list = document.getElementById('ordersList');
+  list.innerHTML = '';
+  orders
+    .filter(o => o.name.trim().toLowerCase() === currentUserName.trim().toLowerCase())
+    .forEach(o => {
+      const div = document.createElement('div');
+      div.className = 'list-card';
+      const items = o.items.map(i =>
+        `${i.menuItem ? i.menuItem.name : 'Unknown'} x${i.quantity}`
+      ).join(', ');
+      div.innerHTML = `<h4>${o.name}</h4>
+        <small>Items: ${items}</small>
+        <small>Type: ${o.orderType} | At: ${new Date(o.createdAt).toLocaleString()}</small>`;
+      list.appendChild(div);
+    });
+}
+
+document.getElementById('bookingForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const date = form.date.value;
+  const time = form.time.value;
+  const guests = form.guests.value;
+  const res = await fetch('http://localhost:5000/api/bookings', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ name: currentUserName, date, time, guests })
+  });
+  if(res.ok) {
+    loadBookings();
+    form.reset();
+    form.name.value = currentUserName;
+  }
+};
+
+document.getElementById('orderForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const menuItem = form.menuItem.value;
+  const quantity = form.quantity.value;
+  const orderType = form.orderType.value;
+  const res = await fetch('http://localhost:5000/api/orders', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      name: currentUserName,
+      items: [{ menuItem, quantity }],
+      orderType
+    })
+  });
+  if(res.ok) {
+    loadOrders();
+    form.reset();
+    form.name.value = currentUserName;
+  }
+};
+
+document.getElementById('logoutBtn').onclick = function() {
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.href = 'booking.html';
+};
+
+loadMenu();
+loadBookings();
+loadOrders();
+</script>
+</body>
+</html>
