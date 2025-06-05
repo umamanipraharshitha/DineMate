@@ -1,6 +1,6 @@
 # 🍽️ DineMate
 
-A modern, full-stack restaurant management app.  
+A modern, full-stack food booking and restaurant management web application.  
 Admins can manage the menu and view all bookings/orders.  
 Users can browse the menu, book tables, and order food—all with a beautiful, responsive UI.
 
@@ -29,7 +29,6 @@ Users can browse the menu, book tables, and order food—all with a beautiful, r
 - **Backend:** Node.js, Express.js, Mongoose (MongoDB)
 - **Database:** MongoDB Atlas
 - **Styling:** CSS Grid, Flexbox, Poppins font
-- **Other:** dotenv, bcryptjs
 
 ---
 
@@ -44,6 +43,7 @@ cd DineMate
 ### 3. **Create a `.env` file in the project root for MONGO_URL**
 
 ### 4. **Start the backend**
+ node app.js
 
 
 ### 5. **Open the frontend**
